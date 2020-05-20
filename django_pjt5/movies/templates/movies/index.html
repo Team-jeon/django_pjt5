@@ -3,8 +3,16 @@
 {% load bootstrap_pagination %}
 
 {% block body %}
+
+<h1 class="text-center m-4"> 추천 영화 </h1>
 <!-- carousel _ 추천 영화 보여주기  -->
 <div id="carouselExampleFade" class="carousel slide carousel-fade w-50 m-auto" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+    <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+  </ol>
+
   <div class="carousel-inner" style="height:450px;">
     {% for movie in recomandedMovies %}
         <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
@@ -22,6 +30,7 @@
   </a>
 </div>
 
+<hr>
 <!-- 영화 데이터 _card layout  -->
 <h1 class="text-center m-4"> Movie List</h1>
 <div class="card-deck">
