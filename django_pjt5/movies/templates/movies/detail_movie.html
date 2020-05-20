@@ -3,19 +3,19 @@
 
 {% block body %}
     <div class="w-75 m-auto">
-        <img src="{{ movie.poster.url }}" alt="" class="d-block w-100">
+        <img src="{{ movie.id }}" alt="" class="d-block w-100">
         <h1 class="text-center mt-3">{{movie.title}}</h1>
         <hr>
         <p>{{movie.summary}}</p>
         {% for review in movie.reviews.all %}
             <hr>
-            <a href="{% url 'movies:detail_review' review.id %}" class="h5 text-secondary d-inline">{{review.title}} 
+            <a href="#" class="h5 text-secondary d-inline">
             <p class="">
                 
             </p></a>
         {% endfor %}
         <br><br>
-        <a href="{% url 'movies:create_review' movie.id %}" type="button" class="btn btn-primary">리뷰 쓰기</a>
+        <a href="#" type="button" class="btn btn-primary">리뷰 쓰기</a>
     </div>
 
 
