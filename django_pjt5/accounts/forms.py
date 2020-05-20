@@ -6,7 +6,7 @@ from django import forms
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
-        fields = ['username','first_name','last_name','email','profile_picture']
+        fields = ['username','first_name','last_name','email','profile_picture', 'like_genres']
 
 class UpdateProfileForm(forms.ModelForm):
     class Meta:

@@ -3,6 +3,25 @@
 {% load bootstrap_pagination %}
 
 {% block body %}
+<!-- carousel _ 추천 영화 보여주기  -->
+<div id="carouselExampleFade" class="carousel slide carousel-fade w-50 m-auto" data-ride="carousel">
+  <div class="carousel-inner" style="height:450px;">
+    {% for movie in recomandedMovies %}
+        <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
+          <a href="{% url 'movies:detail_movie' movie.id %}"><img src="https://image.tmdb.org/t/p/w780/{{movie.poster_path}}" style="" class="d-block w-100" alt="..."></a>
+        </div>
+    {% endfor %}
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleFade" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+
 <!-- 영화 데이터 _card layout  -->
 <h1 class="text-center m-4"> Movie List</h1>
 <div class="card-deck">
@@ -31,27 +50,6 @@
   {% endfor %}
 </div>
 
-<!-- carousel _ 추천 영화 보여주기  -->
-<!-- <div id="carouselExampleFade" class="carousel slide carousel-fade w-50 m-auto" data-ride="carousel">
-  <div class="carousel-inner" style="height:900px;">
-    {% for movie in page_obj %}
-        <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
-          <a href="{% url 'movies:detail_movie' movie.id %}"><img src="https://image.tmdb.org/t/p/w780/{{movie.poster_path}}
-            " style="" class="d-block w-100" alt="..."></a>
-          <span>{{ movie.overview }}</span>
-        </div>
-    {% endfor %}
-  </div>
-
-  <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-    <span class="sr-only">Previous</span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleFade" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-    <span class="sr-only">Next</span>
-  </a>
-</div> -->
 
 
 <!-- pagination -->
