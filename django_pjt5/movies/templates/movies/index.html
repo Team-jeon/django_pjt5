@@ -3,23 +3,68 @@
 {% load bootstrap_pagination %}
 
 {% block body %}
-<!-- pjt5 코드 -->
-<ul>
+<!-- 영화 데이터 _card layout  -->
+<h1 class="text-center m-4"> Movie List</h1>
+<div class="card-deck">
   {% for movie in page_obj %}
-  <li>{{ movie.title }}</li>
+  <div class="card m-3">
+    <img src="https://image.tmdb.org/t/p/w780/{{movie.poster_path}}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{ movie.title }}</h5>
+      <!-- <p class="card-text">무슨내용을 쓸까나..</p> -->
+      <hr>
+    </div>
+      <p class="m-3">
+          {% if user in movie.users_like_movie.all %}
+            <i class="fas fa-heart fa-lg" style="color:crimson" data-id="{{ movie.id }}"></i>
+          {% else %}
+            <i class="fas fa-heart fa-lg" style="color:black" data-id="{{ movie.id }}"></i>
+          {% endif %}
+      </p>
+      <p>
+        <span><span id="like-count-{{ movie.id }}">{{ movie.users_like_movie.all|length }}</span> 명이 이 글을 좋아합니다.</span>
+      </p>
+    <div class="card-footer">
+      <small class="text-muted">{{ movie.release_date }}</small>
+    </div>
+  </div>
   {% endfor %}
-</ul>
+</div>
 
+<!-- carousel _ 추천 영화 보여주기  -->
+<!-- <div id="carouselExampleFade" class="carousel slide carousel-fade w-50 m-auto" data-ride="carousel">
+  <div class="carousel-inner" style="height:900px;">
+    {% for movie in page_obj %}
+        <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
+          <a href="{% url 'movies:detail_movie' movie.id %}"><img src="https://image.tmdb.org/t/p/w780/{{movie.poster_path}}
+            " style="" class="d-block w-100" alt="..."></a>
+          <span>{{ movie.overview }}</span>
+        </div>
+    {% endfor %}
+  </div>
+
+  <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleFade" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div> -->
+
+
+<!-- pagination -->
 {% bootstrap_paginate page_obj range=10 show_prev_next="false" show_first_last="true" %}
 
-<div class="pagination">
-  <span class="step-links">
+<div class="pagination m-3 justify-content-center">
+  <span class="step-links justify-content-center">
       {% if page_obj.has_previous %}
           <a href="?page=1">&laquo; first</a>
           <a href="?page={{ page_obj.previous_page_number }}">previous</a>
       {% endif %}
 
-      <span class="current">
+      <span class="current justify-content-center">
           Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
       </span>
 
@@ -30,29 +75,32 @@
   </span>
 </div>
 
-<!-- pjt4코드 -->
-    <div id="carouselExampleFade" class="carousel slide carousel-fade w-50 m-auto" data-ride="carousel">
-      <div class="carousel-inner" style="height:900px;">
-        {% for movie in movies %}
-            <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
-              <a href="{% url 'movies:detail_movie' movie.id %}"><img src="{{movie.poster_path}}" style="" class="d-block w-100" alt="..."></a>
-            </div>
-        {% endfor %}
-      </div>
+<!-- 좋아요 기능을 ajax로 처리하기 위해서 작성하는 js -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const heartBtns = document.querySelectorAll('i')
 
-      <a class="carousel-control-prev" href="#carouselExampleFade" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="carousel-control-next" href="#carouselExampleFade" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div>
+  heartBtns.forEach((heartBtns)=>{
+    heartBtns.addEventListener('click', function(event){
+      const movieId = event.target.dataset.id
+      const countSpan = document.querySelector(`#like-count-${movieId}`)
 
-
-
-
-
+      axios.get(`/movies/${movieId}/like/`)
+      .then((response)=>{
+        // console.log(response)
+        if (response.data.status) {
+          event.target.style.color = 'crimson'
+          countSpan.innerHTML = response.data.count
+        } else {
+          event.target.style.color = 'black'
+          countSpan.innerHTML = response.data.count
+        }
+      })
+      .catch((error)=>{
+        console.log(error)
+      })
+    })
+  })
+</script>
 {% endblock %}
 <a href="{% url 'movies:create_movie' %}" type="button" class="btn btn-primary mb-5"></a>
