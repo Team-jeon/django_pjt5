@@ -1,7 +1,36 @@
 {% extends 'base.html' %}
 {% load bootstrap4 %}
+{% load bootstrap_pagination %}
 
 {% block body %}
+<!-- pjt5 코드 -->
+<ul>
+  {% for movie in page_obj %}
+  <li>{{ movie.title }}</li>
+  {% endfor %}
+</ul>
+
+{% bootstrap_paginate page_obj range=10 show_prev_next="false" show_first_last="true" %}
+
+<div class="pagination">
+  <span class="step-links">
+      {% if page_obj.has_previous %}
+          <a href="?page=1">&laquo; first</a>
+          <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+      {% endif %}
+
+      <span class="current">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+      </span>
+
+      {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}">next</a>
+          <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+      {% endif %}
+  </span>
+</div>
+
+<!-- pjt4코드 -->
     <div id="carouselExampleFade" class="carousel slide carousel-fade w-50 m-auto" data-ride="carousel">
       <div class="carousel-inner" style="height:900px;">
         {% for movie in movies %}
@@ -20,6 +49,8 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
+
+
 
 
 
