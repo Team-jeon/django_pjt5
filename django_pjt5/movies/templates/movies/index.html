@@ -6,7 +6,7 @@
       <div class="carousel-inner" style="height:900px;">
         {% for movie in movies %}
             <div class="carousel-item {% if forloop.counter == 1 %}active{% endif %}">
-              <a href="{% url 'movies:detail_movie' movie.id %}"><img src="{{movie.poster.url}}" style=";"class="d-block w-100" alt="..."></a>
+              <a href="{% url 'movies:detail_movie' movie.id %}"><img src="{{movie.poster_path}}" style="" class="d-block w-100" alt="..."></a>
             </div>
         {% endfor %}
       </div>
